@@ -1,0 +1,6 @@
+  PID STAT      TIME  SL  RE PAGEIN      VSZ    RSS   LIM     TSIZ  %CPU %MEM COMMAND
+24599 S+     0:00.38   0   0      0  4947048  77424     -        0   0.9  0.5 node /Users/Drew/.nvm/versions/node/v8.9.4/bin/ts-node t.ts
+24314 S      0:00.19   0   0      0  4296240   3152     -        0   0.0  0.0 -bash
+24023 S      0:00.09   0   0      0  4296240   3132     -        0   0.0  0.0 -bash
+15605 S+     0:00.04   0   0      0  4289072   1752     -        0   0.0  0.0 -bash
+13891 S+     0:00.16   0   0      0  4296240   1624     -        0   0.0  0.0 -bash

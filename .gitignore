@@ -1,0 +1,4 @@
+node_modules
+config/local.json
+outdir
+serverless/script_files/*

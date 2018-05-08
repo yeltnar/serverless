@@ -1,0 +1,14 @@
+{
+	"express":{
+		"port":3002
+	},
+	"socket":{
+		"url":"ws://drew-iot.mybluemix.net/",// don't change this here. do it in local
+		"retryFrequency":1000,
+		"default_http_host":"http://127.0.0.1",
+		"default_http_port":"3001"
+	},
+	"helpers":{
+		"scheduler":{}// don't put stuff here; it is to be set later...prob shouldn't do that
+	}
+}

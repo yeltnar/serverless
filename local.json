@@ -1,0 +1,17 @@
+{
+	"ifttt":{
+		"first":"https://maker.ifttt.com/trigger/",
+		"second":"/with/key/bXrf4Mm5tIy0Bjis08SiYC",
+		"push_notification":"push_notification"
+	},
+	"googleDrive":{
+		"getUrl":"https://script.google.com/macros/s/AKfycbwYZZAn20GTy32-2j0pikNRBMOYDhz76vgxgckbexeQDDPH_3Q/exec?type=get&que=iot",
+		"popUrl":"https://script.google.com/macros/s/AKfycbwYZZAn20GTy32-2j0pikNRBMOYDhz76vgxgckbexeQDDPH_3Q/exec?type=pop&que=iot",
+		"shortLoop":1000,
+		"longLoop":5000
+	},
+	"socket":{
+		//"url":"ws://drew-iot.mybluemix.net/",
+		"url":"ws://127.0.0.1:3000/"
+	}
+}

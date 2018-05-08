@@ -1,0 +1,18 @@
+{
+  "name": "serverless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "clear;ts-node serverless_server.ts"
+  },
+  "author": "Andrew Brantley",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "child_process": "^1.0.2",
+    "config": "^1.30.0",
+    "express": "^4.16.3",
+    "fs": "0.0.1-security"
+  }
+}
