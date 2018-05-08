@@ -19,50 +19,27 @@ app.use(bodyParse.json());
 let port = config.express.port;
 app.listen(port, () => console.log('Serverless server is listening on port '+port+'!'));	
 
-app.post("/createFile/:fileName", (req, res, next)=>{
+let createFileUri = "/createFile";
+app.post(createFileUri, (req, res, next)=>{
 	const fileContents = req.body.fileContents;
-	const fileName = req.params.fileName;
+	let fileName = getFile(req.body.file || req.query.file);
+	if(fileName===undefined){
+		res.status(404).send("no file name provided");
+		console.error("28 no file name provided");
+		return 
+	}
 
-	console.log("wrting "+"serverless/script_files/"+fileName);
+	console.log("wrting "+fileName);
 	fs.writeFileSync(fileName, fileContents);
 	res.end(fileName);
 
 	next();
 });
 
-// function requireFile(req, res, next){
-// 	let file = getFile(req.params.fileName || req.body.file || req.query.file);
-// 	console.log(file)
-// 	file = fileMap[file];
-// 	console.log(file)
-
-// 	if(file===undefined){
-// 		let errMsg = "file not found: "+file
-// 		console.log(req.params.fileName || req.body.file || req.query.file)
-// 		console.error(errMsg);
-// 		res.status(500).end(errMsg);
-// 	}else{
-
-// 		if(requiredFiles[file]===undefined||true){
-		
-// 			requiredFiles[file]={};
-// 			console.log("file is "+file);
-// 			requiredFiles[file].init = require(file);
-// 			requiredFiles[file].funct = requiredFiles[file].init();
-// 			requiredFiles[file].funct();
-
-// 			res.end("done1");
-		
-// 		}else if( requiredFiles[file].good!==false ){
-// 			requiredFiles[file].funct();
-// 			res.end("done2");
-// 		}
-		
-// 	}
-// }
-
+let executeFileUri = "/execFile";
 function executeFile(req, res, next){
-	let file = getFile(req.params.fileName);
+	let fileName = req.body.file || req.query.file;
+	let file = getFile(fileName);
 
 	let params = req.query || {};
 	for( let k in req.body  ){
@@ -81,11 +58,14 @@ function executeFile(req, res, next){
 
 }
 
-app.get("/execFile/:fileName", executeFile);
-app.post("/execFile/:fileName", executeFile);
+app.get(executeFileUri, executeFile);
+app.post(executeFileUri, executeFile);
 // app.get("/requireFile/:fileName", requireFile);
 // app.post("/requireFile/:fileName", requireFile);
 
 function getFile(simpleStr:string){
+	if(simpleStr===undefined||simpleStr===null){
+		return undefined;
+	}
 	return "./serverless_files/"+simpleStr;
 }
