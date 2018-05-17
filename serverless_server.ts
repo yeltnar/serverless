@@ -6,6 +6,8 @@ const config = require("config");
 const {exec, execFile} = require("child_process");
 const requiredFiles = {};
 const requestP = require('request-promise-native');
+import {scheduleInit} from './schedule/schedule.ts';
+scheduleInit({executeFile});
 
 let fileMap = {
 	"t.js":"t123.js"
@@ -37,7 +39,7 @@ app.post(createFileUri, (req, res, next)=>{
 });
 
 let executeFileUri = "/execFile";
-function executeFile(req, res, next){
+async function execFileEndpoint(req, res, next){
 	let fileName = req.body.file || req.query.file;
 	let file = getFile(fileName);
 
@@ -48,18 +50,39 @@ function executeFile(req, res, next){
 
 	params = JSON.stringify(JSON.stringify(params));
 
-	let toExec = "ts-node "+file+" "+params;
-	console.log("toExec "+toExec);
+	let stdout = await executeFile(file, params).then();
 
-	exec(toExec, (err, stdout, stderr)=>{
-		res.end(stdout);
-		next();
-	});
+	res.end(stdout);
+	next();
 
 }
 
-app.get(executeFileUri, executeFile);
-app.post(executeFileUri, executeFile);
+function executeFile(file, params){
+
+	return new Promise((resolve, reject)=>{
+
+		if(typeof params === 'object'){
+			params = JSON.stringify(JSON.stringify(params));
+		}
+
+		let toExec = "ts-node "+file+" "+params;
+		//console.log("toExec "+toExec);
+
+		exec(toExec, (err, stdout, stderr)=>{
+			if(err){
+				reject(err);
+			}if(stderr){
+				reject(stderr);
+			}else{
+				resolve(stdout);
+			}
+		});
+	})
+
+}
+
+app.get(executeFileUri, execFileEndpoint);
+app.post(executeFileUri, execFileEndpoint);
 // app.get("/requireFile/:fileName", requireFile);
 // app.post("/requireFile/:fileName", requireFile);
 
@@ -69,3 +92,4 @@ function getFile(simpleStr:string){
 	}
 	return "./serverless_files/"+simpleStr;
 }
+	
