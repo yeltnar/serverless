@@ -7,7 +7,7 @@
 			"cwd":"serverless_files/phone_wallpaper"
 		},
 		"rule":{
-			"hour":[7,16,19]
+			"hour":[7,19]
 		},
 		"params":{"test_key":"test_value"},
 		"job":null
