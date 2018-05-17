@@ -41,6 +41,7 @@ app.post(createFileUri, (req, res, next)=>{
 let executeFileUri = "/execFile";
 async function execFileEndpoint(req, res, next){
 	let fileName = req.body.file || req.query.file;
+	let options = req.body.options || req.query.options || null;
 	let file = getFile(fileName);
 
 	let params = req.query || {};
@@ -50,14 +51,14 @@ async function execFileEndpoint(req, res, next){
 
 	params = JSON.stringify(JSON.stringify(params));
 
-	let stdout = await executeFile(file, params).then();
+	let stdout = await executeFile(file, options, params).then();
 
 	res.end(stdout);
 	next();
 
 }
 
-function executeFile(file, params){
+function executeFile(file, options, params){
 
 	return new Promise((resolve, reject)=>{
 
@@ -68,7 +69,7 @@ function executeFile(file, params){
 		let toExec = "ts-node "+file+" "+params;
 		//console.log("toExec "+toExec);
 
-		exec(toExec, (err, stdout, stderr)=>{
+		exec(toExec, options, (err, stdout, stderr)=>{
 			if(err){
 				reject(err);
 			}if(stderr){
