@@ -6,7 +6,7 @@ const config = require("config");
 const {exec, execFile} = require("child_process");
 const requiredFiles = {};
 const requestP = require('request-promise-native');
-import {scheduleInit} from './schedule/schedule';
+import {scheduleInit} from './schedule/schedule.ts';
 scheduleInit({executeFile});
 
 let fileMap = {

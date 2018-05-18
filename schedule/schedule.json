@@ -11,18 +11,5 @@
 		},
 		"params":{"test_key":"test_value"},
 		"job":null
-	},{
-		"name":"test phone walpaper",
-		"repeat":true,
-		"file_location":"app.ts",
-		"options":{
-			"cwd":"serverless_files/phone_wallpaper"
-		},
-		"rule":{
-			"hour":[7,8,19],
-			"minute":[51]
-		},
-		"params":{"test_key":"test_value"},
-		"job":null
 	}
 ]
