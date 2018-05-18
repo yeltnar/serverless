@@ -12,5 +12,19 @@
 		},
 		"params":{"test_key":"test_value"},
 		"job":null
+	},{
+		"name":"keep_bm_alive",
+		"repeat":true,
+		"command":"./keep_bm_alive.sh",
+		"options":{
+			"cwd":"serverless_files/keep_bm_alive"
+		},
+		"rule":{
+			"dayOfWeek":[3],
+			"hour":[3],
+			"minute":[0]
+		},
+		"params":{"test_key":"test_value"},
+		"job":null
 	}
 ]
