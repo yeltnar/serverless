@@ -25,7 +25,8 @@ async function setPhoneWallpaper(walpaper_info) {
         "url":set_wallpaper_url,
         "method": "post",
         "body": {
-            "value1":wallpaper_url
+            "value1":wallpaper_url,
+            "value2":"Device: "+config.deviceName
         },
         "json":true
     };
