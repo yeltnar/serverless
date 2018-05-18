@@ -38,8 +38,8 @@ app.post(createFileUri, (req, res, next)=>{
 	next();
 });
 
-let executeFileUri = "/execFile";
-async function execFileEndpoint(req, res, next){
+let tsExecuteFileUri = "/tsExecFile";
+async function tsExecFileEndpoint(req, res, next){
 	let fileName = req.body.file || req.query.file;
 	let options = req.body.options || req.query.options || null;
 	let file = getFile(fileName);
@@ -51,25 +51,59 @@ async function execFileEndpoint(req, res, next){
 
 	params = JSON.stringify(JSON.stringify(params));
 
-	let stdout = await executeFile(file, options, params).then();
 
-	res.end(stdout);
+	let msg
+	console.log(";;;;;;;;;;;;;;;;;;;;;");
+	try{
+		msg = await executeFile(file, options, params);
+	}catch(e){
+		console.error("serverless_server 56");
+		console.error(e);
+		msg=e.toString();
+	}
+	console.log("]]]]]]]]]]]]]]]]]]]]]");
+
+	res.end(msg);
 	next();
 
 }
 
-function executeFile(file, options, params){
+let runShellUri = "/runShell";
+async function runShellEndpoint(req, res, next){
+	let toExec = req.body.toExec || req.query.toExec;
+	let options = req.body.options || req.query.options || null;
 
-	return new Promise((resolve, reject)=>{
+	let params = req.query || {};
+	for( let k in req.body  ){
+		params[k]=req.body[k];
+	}
 
-		if(typeof params === 'object'){
-			params = JSON.stringify(JSON.stringify(params));
-		}
+	params = JSON.stringify(JSON.stringify(params));
 
-		let toExec = "ts-node "+file+" "+params;
+	let msg
+	try{
+		msg = await runShell(toExec, options);
+	}catch(e){
+		console.error("serverless_server 89");
+		console.error(e);
+		msg=e.toString();
+	}
 
-		runShell(toExec,options);
-	})
+	res.end(msg);
+	next();
+
+}
+
+async function executeFile(file, options, params){
+
+	if(typeof params === 'object'){
+		params = JSON.stringify(JSON.stringify(params));
+	}
+
+	let toExec = "ts-node "+file+" "+params;
+
+	return runShell(toExec,options);
+	
 
 }
 
@@ -78,8 +112,10 @@ function runShell(toExec, options){
 
 		exec(toExec, options, (err, stdout, stderr)=>{
 			if(err){
+				console.error("run shell err");
 				reject(err);
 			}if(stderr){
+				console.error("run shell stderr");
 				reject(stderr);
 			}else{
 				resolve(stdout);
@@ -88,8 +124,10 @@ function runShell(toExec, options){
 	});
 }
 
-app.get(executeFileUri, execFileEndpoint);
-app.post(executeFileUri, execFileEndpoint);
+app.get(tsExecuteFileUri, tsExecFileEndpoint);
+app.post(tsExecuteFileUri, tsExecFileEndpoint);
+app.get(runShellUri, runShellEndpoint);
+app.post(runShellUri, runShellEndpoint);
 // app.get("/requireFile/:fileName", requireFile);
 // app.post("/requireFile/:fileName", requireFile);
 
