@@ -2,7 +2,7 @@
 	{
 		"name":"set phone walpaper",
 		"repeat":true,
-		"file_location":"app.ts",
+		"command":"ts-node app.ts",
 		"options":{
 			"cwd":"serverless_files/phone_wallpaper"
 		},

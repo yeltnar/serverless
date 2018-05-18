@@ -8,15 +8,15 @@ const schedule = require('node-schedule');
 let scheduleObj = JSON.parse(fs.readFileSync('schedule/schedule.json').toString());
 
 //console.log(scheduleObj);
-let executeFile;
+let runShell;
 
 function loadScheduledItems(){
 	for(let k in scheduleObj){
 		try{
-			let {file_location,rule,params,name,options} = scheduleObj[k];
+			let {command,rule,params,name,options} = scheduleObj[k];
 			scheduleObj[k].job=schedule.scheduleJob(rule, async ()=>{
 				console.log("running `"+name+"`");
-				let result = await executeFile(file_location,options,params);
+				let result = await runShell(command,options,params);
 				console.log("`"+name +"` result...");
 				console.log(result);
 			console.log("`"+name+"` next invocation - "+scheduleObj[k].job.nextInvocation());
@@ -27,6 +27,6 @@ function loadScheduledItems(){
 }
 
 export function scheduleInit(params){
-	executeFile = params.executeFile;
+	runShell = params.runShell;
 	loadScheduledItems();
 };

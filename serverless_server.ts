@@ -7,7 +7,7 @@ const {exec, execFile} = require("child_process");
 const requiredFiles = {};
 const requestP = require('request-promise-native');
 import {scheduleInit} from './schedule/schedule_app';
-scheduleInit({executeFile});
+scheduleInit({runShell});
 
 let fileMap = {
 	"t.js":"t123.js"
@@ -67,7 +67,14 @@ function executeFile(file, options, params){
 		}
 
 		let toExec = "ts-node "+file+" "+params;
-		//console.log("toExec "+toExec);
+
+		runShell(toExec,options);
+	})
+
+}
+
+function runShell(toExec, options){
+	return new Promise((resolve, reject)=>{
 
 		exec(toExec, options, (err, stdout, stderr)=>{
 			if(err){
@@ -78,8 +85,7 @@ function executeFile(file, options, params){
 				resolve(stdout);
 			}
 		});
-	})
-
+	});
 }
 
 app.get(executeFileUri, execFileEndpoint);
