@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "clear;tsc serverless_server.ts --outDir outdir;pm2 start outdir/serverless_server.js;pm2 logs",
+    "start": "clear;tsc serverless_server.ts --outDir outdir;pm2 stop serverless_server;pm2 start outdir/serverless_server.js;pm2 logs",
     "test": "clear;ts-node serverless_server.ts"
   },
   "author": "Andrew Brantley",
