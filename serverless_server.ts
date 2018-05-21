@@ -82,7 +82,7 @@ async function runShellEndpoint(req, res, next){
 
 	let msg
 	try{
-		msg = await runShell(toExec, options);
+		msg = await runShell(toExec, options, params);
 	}catch(e){
 		console.error("serverless_server 89");
 		console.error(e);
@@ -107,8 +107,10 @@ async function executeFile(file, options, params){
 
 }
 
-function runShell(toExec, options){
+function runShell(toExec, options, params=""){
 	return new Promise((resolve, reject)=>{
+
+		toExec = toExec+" "+params;
 
 		exec(toExec, options, (err, stdout, stderr)=>{
 			if(err){

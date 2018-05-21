@@ -1,3 +1,7 @@
+let args = process.argv;
+args.shift();
+args.shift();
+
 const requestP = require('request-promise-native');
 const config = require('config');
 import { helpersInit } from '../../helpers/helper.ts';
@@ -6,8 +10,14 @@ let helpers = helpersInit();
 
 const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } = config;
 
-(async() => {
+// async to allow for await within the function 
+(async()=>{
 
+    args = JSON.parse(args[0]||"{}");
+
+    //console.log(args)
+
+    if(false){}
     try{
         let walpaper_info = await getPhoneWallpaper();
         setPhoneWallpaper(walpaper_info);
