@@ -17,12 +17,15 @@ const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } 
 
     //console.log(args)
 
-    if(false){}
-    try{
-        let walpaper_info = await getPhoneWallpaper();
-        setPhoneWallpaper(walpaper_info);
-    }catch(e){
-        console.error(e);
+    if(false){
+
+    }else{
+        try{
+            let walpaper_info = await getPhoneWallpaper();
+            setPhoneWallpaper(walpaper_info);
+        }catch(e){
+            console.error(e);
+        }
     }
 
 })()
@@ -62,6 +65,9 @@ async function getPhoneWallpaper() {
             "url": search_url
         }
 
+        used_wallpaper = await helpers.fsPromise.readFile(used_wallpaper_file);
+        used_wallpaper = JSON.parse(used_wallpaper);
+
         let search_result = await requestP(options)
         search_result = JSON.parse(search_result);
         search_result = search_result.data.children;
@@ -69,14 +75,15 @@ async function getPhoneWallpaper() {
             return ele.data.url;
         });
 
-        if( used_wallpaper.indexOf(wallpaper_url)<0 ){
+        console.log(search_result[0])
+        console.log(used_wallpaper)
+
+        if( used_wallpaper.indexOf(search_result[0])<0 ){
             wallpaper_url = search_result[0]; // did this to only send top result
         }else{
             wallpaper_url = undefined;
         }
 
-        // used_wallpaper = await helpers.fsPromise.readFile(used_wallpaper_file);
-        // used_wallpaper = JSON.parse(used_wallpaper);
 
         // let walpaper_to_set = search_result.reduce((acc, cur) => {
         //     if (acc === undefined && used_wallpaper.indexOf(cur)<0) {
