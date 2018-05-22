@@ -138,8 +138,8 @@ app.get(tsExecuteFileUri, tsExecFileEndpoint);
 app.post(tsExecuteFileUri, tsExecFileEndpoint);
 app.get(runShellUri, runShellEndpoint);
 app.post(runShellUri, runShellEndpoint);
-app.get(new RegExp(runShellUri+"*"), runShellEndpoint);
-app.post(new RegExp(runShellUri+"*"), runShellEndpoint);
+app.get(new RegExp(runShellUri+"/.*"), runShellEndpoint);
+app.post(new RegExp(runShellUri+"/.*"), runShellEndpoint);
 // app.get("/requireFile/:fileName", requireFile);
 // app.post("/requireFile/:fileName", requireFile);
 
