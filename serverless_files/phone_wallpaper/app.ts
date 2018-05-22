@@ -17,8 +17,8 @@ const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } 
 
     //console.log(args)
 
-    if(false){
-
+    if(args.preSelected===true && args.imgUrl!==undefined){
+        setPhoneWallpaper(args.imgUrl);
     }else{
         try{
             let walpaper_info = await getPhoneWallpaper();
@@ -74,9 +74,6 @@ async function getPhoneWallpaper() {
         search_result = search_result.map((ele) => {
             return ele.data.url;
         });
-
-        console.log(search_result[0])
-        console.log(used_wallpaper)
 
         if( used_wallpaper.indexOf(search_result[0])<0 ){
             wallpaper_url = search_result[0]; // did this to only send top result
