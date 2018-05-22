@@ -2,4 +2,5 @@ node_modules
 config/local.json
 outdir
 serverless/script_files/*
+serverless/serverless_files/phone_wallpaper/used_wallpaper.json
 serverless_files/phone_wallpaper/used_wallpaper.json
