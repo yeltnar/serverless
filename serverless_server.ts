@@ -69,18 +69,24 @@ async function tsExecFileEndpoint(req, res, next){
 }
 
 let runShellUri = "/runShell";
+// let runShellUriRegex = new RegExp(runShellUri+"/.*");
+// let tokenCheck = /token_([^\/]+)/;
 async function runShellEndpoint(req, res, next){
 	let toExec = req.body.toExec || req.query.toExec;
 	let options = req.body.options || req.query.options || null;
 
 	let params = {};
+
+	// if( runShellUriRegex.test(req.originalUrl) && tokenCheck.test(req.originalUrl) ){
+	// 	let token = tokenCheck.exec(req.originalUrl)[1];
+	// }
+
 	for( let k in req.body  ){
 		params[k]=req.body[k];
 	}
 	for( let k in req.query  ){
 		params[k]=req.query[k];
 	}
-
 
 	if( params.clearParams==="true"||params.clearParams===true ){
 		params = "";
@@ -138,8 +144,8 @@ app.get(tsExecuteFileUri, tsExecFileEndpoint);
 app.post(tsExecuteFileUri, tsExecFileEndpoint);
 app.get(runShellUri, runShellEndpoint);
 app.post(runShellUri, runShellEndpoint);
-app.get(new RegExp(runShellUri+"/.*"), runShellEndpoint);
-app.post(new RegExp(runShellUri+"/.*"), runShellEndpoint);
+// app.get(runShellUriRegex, runShellEndpoint);
+// app.post(runShellUriRegex, runShellEndpoint);
 // app.get("/requireFile/:fileName", requireFile);
 // app.post("/requireFile/:fileName", requireFile);
 
