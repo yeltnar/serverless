@@ -78,7 +78,11 @@ async function runShellEndpoint(req, res, next){
 		params[k]=req.body[k];
 	}
 
-	params = JSON.stringify(JSON.stringify(params));
+	if( params.clearParams==="true"||params.clearParams===true ){
+		params = "";
+	}else{
+		params = JSON.stringify(JSON.stringify(params));
+	}
 
 	let msg
 	try{
