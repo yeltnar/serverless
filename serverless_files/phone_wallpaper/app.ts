@@ -15,10 +15,13 @@ const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } 
 
     args = JSON.parse(args[0]||"{}");
 
-    //console.log(args)
-
-    if(args.preSelected===true && args.imgUrl!==undefined){
-        setPhoneWallpaper(args.imgUrl);
+    if( (args.preSelected===true||args.preSelected==="true") && args.imgUrl!==undefined){
+        console.log("using preselected: "+args.imgUrl)
+        try{
+            setPhoneWallpaper({"wallpaper_url":args.imgUrl});
+        }catch(e){
+            console.error(e);
+        }
     }else{
         try{
             let walpaper_info = await getPhoneWallpaper();
@@ -33,6 +36,15 @@ const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } 
 async function setPhoneWallpaper(walpaper_info) {
 
     let {wallpaper_url, used_wallpaper} = walpaper_info;
+
+    if(used_wallpaper===undefined){
+        try{
+            used_wallpaper = await helpers.fsPromise.readFile(used_wallpaper_file);
+            used_wallpaper = JSON.parse(used_wallpaper);
+        }catch(e){
+            used_wallpaper=[];
+        }
+    }
 
     if(wallpaper_url!==undefined){
         console.log("setting walpaper to " + wallpaper_url);
