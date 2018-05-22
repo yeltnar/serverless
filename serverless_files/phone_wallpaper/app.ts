@@ -16,13 +16,25 @@ const { search_url, set_wallpaper_url, default_wallpaper, used_wallpaper_file } 
     args = JSON.parse(args[0]||"{}");
 
     if( (args.preSelected===true||args.preSelected==="true") && args.imgUrl!==undefined){
-        console.log("using preselected: "+args.imgUrl)
+        
+        console.log("using preselected: "+args.imgUrl);
         try{
             setPhoneWallpaper({"wallpaper_url":args.imgUrl});
         }catch(e){
             console.error(e);
         }
+    }else if( (args.newWallpaper===true||args.newWallpaper==="true") ){
+        
+        console.log("setting new wallpaper");
+        try{
+            let walpaper_info = await getNewPhoneWallpaper()
+            setPhoneWallpaper(walpaper_info);
+        }catch(e){
+            console.error(e);
+        }
     }else{
+        
+           console.log("running top wallpaper");
         try{
             let walpaper_info = await getPhoneWallpaper();
             setPhoneWallpaper(walpaper_info);
@@ -102,6 +114,41 @@ async function getPhoneWallpaper() {
         // }, undefined);
 
         // wallpaper_url = walpaper_to_set || default_wallpaper;
+
+    } catch (e) {
+        console.error(e)
+    }
+    return {wallpaper_url,used_wallpaper};
+}
+
+async function getNewPhoneWallpaper() {
+
+    let wallpaper_url="";
+    let used_wallpaper=[];
+
+    try {
+        let options = {
+            "url": search_url
+        }
+
+        let search_result = await requestP(options)
+        search_result = JSON.parse(search_result);
+        search_result = search_result.data.children;
+        search_result = search_result.map((ele) => {
+            return ele.data.url;
+        });
+
+        used_wallpaper = await helpers.fsPromise.readFile(used_wallpaper_file);
+        used_wallpaper = JSON.parse(used_wallpaper);
+
+        let walpaper_to_set = search_result.reduce((acc, cur) => {
+            if (acc === undefined && used_wallpaper.indexOf(cur)<0) {
+                acc = cur;
+            }
+            return acc;
+        }, undefined);
+
+        wallpaper_url = walpaper_to_set || default_wallpaper;
 
     } catch (e) {
         console.error(e)
