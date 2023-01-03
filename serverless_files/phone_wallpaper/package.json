@@ -10,6 +10,6 @@
   "author": "Andrew Brantley",
   "license": "ISC",
   "dependencies": {
-    "config": "^1.30.0"
+    "config": "^1.31.0"
   }
 }
